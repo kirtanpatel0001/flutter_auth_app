@@ -1,26 +1,25 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const authRoutes = require("./routes/auth");
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const authRoutes = require('./routes/auth'); // Import your routes
 
-dotenv.config();
+dotenv.config(); // Load .env config
 
 const app = express();
 
-// Middleware to parse JSON body
+// Middleware to parse JSON
 app.use(express.json());
 
-// Routes
-app.use("/api/auth", authRoutes);
+// API Route Mounting
+app.use('/api/auth', authRoutes);
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => {
-  console.log("MongoDB Connected");
-  const port = process.env.PORT || 50000;
-  app.listen(port, () => console.log(`Server running on port ${port}`));
-})
-.catch(err => console.error("MongoDB connection error:", err));
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.error('MongoDB Connection Error:', err));
+
+// Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
